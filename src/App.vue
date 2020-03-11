@@ -1,28 +1,41 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="app">
+    <Counter />
+    <CreateUser addUser() />
+    <Users :users="users" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Counter from './components/Counter';
+import Users from './components/Users';
+import CreateUser from './components/CreateUser';
+import axios from 'axios';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Counter,
+    Users,
+    CreateUser
+  },
+  data() {
+    return {
+      users: []
+    };
+  },
+  created() {
+    axios
+      .get('https://jsonplaceholder.typicode.com/todos')
+      .then(res => (this.users = res.data))
+      .catch(err => console.log(err));
   }
-}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+.app {
+  width: 80%;
+  margin: 0 auto;
 }
 </style>
